@@ -1,20 +1,23 @@
-apiVersion: eksctl.io/v1alpha5
-kind: ClusterConfig
-
-metadata:
-  name: basic-cluster
-  region: us-east-2
-
-nodeGroups:
-  - name: ng-1
-    instanceType: m5.large
-    desiredCapacity: 10
-    volumeSize: 80
-    ssh:
-      allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key
-  - name: ng-2
-    instanceType: m5.xlarge
-    desiredCapacity: 2
-    volumeSize: 100
-    ssh:
-      publicKeyPath: ~/.ssh/ec2_id_rsa.pub
+EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: Test
+      Version: "1.20"
+      RoleArn: "arn:aws:iam::882956824445:instance-profile/yasaswini-eks"
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - sg-05be9f061a6684ea6
+        SubnetIds:
+          - subnet-00d54dcf1ce5adc0d
+          - subnet-07175d26b040c3501
+        EndpointPublicAccess: false
+        EndpointPrivateAccess: true
+        PublicAccessCidrs: [ "1.1.1.2/32" ]
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+      Tags:
+        - Key: "key"
+          Value: "val"
